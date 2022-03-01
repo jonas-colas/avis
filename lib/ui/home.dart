@@ -46,6 +46,7 @@ class _HomeState extends State<Home> {
             title: "Title: Theme Changed",
             body: Get.isDarkMode ? "Body: Light Mode" : "Body: Dark Mode",
           );
+          notifyHelper.scheduledNotification();
         },
         child: const Icon(Icons.nightlight_round, size: 20),
       ),
