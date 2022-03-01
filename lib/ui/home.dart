@@ -1,5 +1,7 @@
+import 'package:avis/services/notification_services.dart';
 import 'package:avis/services/theme_services.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Home extends StatefulWidget {
   Home({Key? key}) : super(key: key);
@@ -9,6 +11,16 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  var notifyHelper;
+
+  @override
+  void initState() {
+    super.initState();
+    notifyHelper = NotifyHelper();
+    notifyHelper.initializeNotification();
+    notifyHelper.requestIOSPermissions();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,20 +35,24 @@ class _HomeState extends State<Home> {
       ),
     );
   }
-}
 
-_appBar() {
-  return AppBar(
-    leading: GestureDetector(
-      onTap: () {
-        print('tapped');
-        ThemeService().switchTheme();
-      },
-      child: const Icon(Icons.nightlight_round, size: 20),
-    ),
-    actions: const [
-      Icon(Icons.person, size: 20),
-      SizedBox(width: 20),
-    ],
-  );
+  _appBar() {
+    return AppBar(
+      leading: GestureDetector(
+        onTap: () {
+          // print('tapped');
+          ThemeService().switchTheme();
+          notifyHelper.displayNotification(
+            title: "Title: Theme Changed",
+            body: Get.isDarkMode ? "Body: Light Mode" : "Body: Dark Mode",
+          );
+        },
+        child: const Icon(Icons.nightlight_round, size: 20),
+      ),
+      actions: const [
+        Icon(Icons.person, size: 20),
+        SizedBox(width: 20),
+      ],
+    );
+  }
 }
